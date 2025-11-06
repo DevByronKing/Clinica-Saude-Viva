@@ -16,8 +16,14 @@ Attributes:
 
 import os
 import json
-from typing import Optional, Dict
+from typing import Optional, Dict, List, Any, cast
 from openai import OpenAI
+from openai.types.chat import (
+    ChatCompletionMessageParam,
+    ChatCompletionToolParam,
+    ChatCompletionNamedToolChoiceParam,
+    ChatCompletionFunctionToolParam
+)
 from dotenv import load_dotenv
 from datetime import datetime
 
@@ -27,7 +33,7 @@ _api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=_api_key)
 
 # Define a "ferramenta" que a IA pode usar
-tools = [
+tools: List[ChatCompletionToolParam] = [
     {
         "type": "function",
         "function": {
@@ -103,32 +109,39 @@ def parse_natural_language(text: str) -> Optional[Dict[str, str]]:
     system_prompt = "\n".join(system_prompt_parts)
 
     try:
+        messages: List[ChatCompletionMessageParam] = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": text},
+        ]
+        tool_choice: ChatCompletionNamedToolChoiceParam = {
+            "type": "function",
+            "function": {"name": "extrair_info_agendamento"}
+        }
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",  # Ou gpt-4, se permitido
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": text},
-            ],
+            messages=messages,
             tools=tools,
-            tool_choice="auto",  # Força a IA a usar a ferramenta
+            tool_choice=tool_choice
         )
 
         message = response.choices[0].message
 
-        if message.tool_calls:
-            # A IA decidiu usar a ferramenta, ótimo!
-            tool_call = message.tool_calls[0]
-            function_args = json.loads(tool_call.function.arguments)
-
-            # Valida que os campos exigidos existem e não estão vazios
-            for key in ("paciente", "data", "hora"):
-                if key not in function_args or not str(function_args[key]).strip():
-                    return None
-
-            return function_args
-        else:
-            # A IA não conseguiu extrair os dados
+        if not (message.tool_calls and len(message.tool_calls) > 0):
             return None
+            
+        # A IA decidiu usar a ferramenta, ótimo!
+        tool_call = message.tool_calls[0]
+        if tool_call.type != "function":
+            return None
+            
+        function_args = json.loads(tool_call.function.arguments)
+
+        # Valida que os campos exigidos existem e não estão vazios
+        for key in ("paciente", "data", "hora"):
+            if key not in function_args or not str(function_args[key]).strip():
+                return None
+
+        return function_args
 
     except Exception as e:
         print(f"Erro na API da OpenAI: {e}")
@@ -173,18 +186,22 @@ def generate_confirmation_message(paciente: str, data_hora_inicio: str) -> str:
     prompt = "\n".join(prompt_lines)
 
     try:
+        messages: List[ChatCompletionMessageParam] = [
+            {
+                "role": "system",
+                "content": "Você é um assistente de clínica, simpático.",
+            },
+            {"role": "user", "content": prompt},
+        ]
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "Você é um assistente de clínica, simpático.",
-                },
-                {"role": "user", "content": prompt},
-            ],
-            max_tokens=100,
+            messages=messages,
+            max_tokens=100
         )
-        return response.choices[0].message.content
+        content = response.choices[0].message.content
+        if content is None:
+            return "Não foi possível gerar uma mensagem de confirmação."
+        return content
     except Exception as e:
         print(f"Erro na API da OpenAI: {e}")
         return "Erro ao gerar mensagem de confirmação. Por favor, tente novamente mais tarde."
