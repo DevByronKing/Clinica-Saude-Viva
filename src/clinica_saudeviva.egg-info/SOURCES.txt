@@ -1,0 +1,8 @@
+README.md
+setup.py
+src/clinica_saudeviva.egg-info/PKG-INFO
+src/clinica_saudeviva.egg-info/SOURCES.txt
+src/clinica_saudeviva.egg-info/dependency_links.txt
+src/clinica_saudeviva.egg-info/requires.txt
+src/clinica_saudeviva.egg-info/top_level.txt
+tests/test_scheduler.py
