@@ -8,7 +8,10 @@ def _fake_parse_response(args_dict):
     # Builds an object similar to the OpenAI response expected by parse_natural_language
     message = SimpleNamespace(
         tool_calls=[
-            SimpleNamespace(function=SimpleNamespace(arguments=json.dumps(args_dict)))
+            SimpleNamespace(
+                type="function",
+                function=SimpleNamespace(arguments=json.dumps(args_dict))
+            )
         ]
     )
     return SimpleNamespace(choices=[SimpleNamespace(message=message)])
