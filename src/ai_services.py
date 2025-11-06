@@ -16,7 +16,7 @@ Attributes:
 
 import os
 import json
-from typing import Optional, Dict, Any
+from typing import Optional, Dict
 from openai import OpenAI
 from dotenv import load_dotenv
 from datetime import datetime

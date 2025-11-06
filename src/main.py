@@ -20,7 +20,7 @@ import logging
 import scheduler
 import ai_services
 from datetime import datetime
-from typing import Dict, Any
+# typing imports removed (unused) to satisfy lint
 
 
 logging.basicConfig(
