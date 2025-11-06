@@ -1,4 +1,4 @@
-# Clínica SaúdeViva - Sistema de Agendamento
+# Clínica Saúde Viva - Sistema de Agendamento
 
 Sistema de agendamento de consultas com processamento de linguagem natural para a Clínica SaúdeViva.
 
