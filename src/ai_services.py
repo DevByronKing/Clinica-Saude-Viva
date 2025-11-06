@@ -187,4 +187,4 @@ def generate_confirmation_message(paciente: str, data_hora_inicio: str) -> str:
         return response.choices[0].message.content
     except Exception as e:
         print(f"Erro na API da OpenAI: {e}")
-        return "Erro ao gerar mensagem de confirmação."
+        return "Erro ao gerar mensagem de confirmação. Por favor, tente novamente mais tarde."
