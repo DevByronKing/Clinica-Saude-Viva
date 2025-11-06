@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Create and activate venv
+      run: |
+        python -m venv .venv
+        . .venv/bin/activate
+        python -m pip install --upgrade pip
+    - name: Install dependencies
+      run: |
+        . .venv/bin/activate
+        pip install -r requirements.txt || true
+        pip install pytest pytest-cov flake8 mypy black
+    - name: Lint (flake8)
+      run: |
+        . .venv/bin/activate
+        python -m flake8 src tests --max-line-length=88
+    - name: Type check (mypy)
+      run: |
+        . .venv/bin/activate
+        python -m mypy src --ignore-missing-imports
+    - name: Run tests
+      run: |
+        . .venv/bin/activate
+        python -m pytest --maxfail=1 -q --disable-warnings --cov=src --cov-report=term-missing

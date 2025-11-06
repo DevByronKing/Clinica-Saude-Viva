@@ -2,3 +2,11 @@ venv/
 __pycache__/
 *.pyc
 .env
+\.venv/
+app.log
+consultas.json
+.pytest_cache/
+.vscode/
+.idea/
+dist/
+build/
