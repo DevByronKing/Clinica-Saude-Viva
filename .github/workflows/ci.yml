@@ -26,6 +26,7 @@ jobs:
         . .venv/bin/activate
         pip install -r requirements.txt || true
         pip install pytest pytest-cov flake8 mypy black
+        pip install -e .
     - name: Lint (flake8)
       run: |
         . .venv/bin/activate
