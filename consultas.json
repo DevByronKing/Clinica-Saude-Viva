@@ -1,21 +1,23 @@
-{
+[
+    {
         "id": 8,
         "paciente": "Mateus ",
         "data_hora_inicio": "2025-11-13T10:00:00",
         "duracao_min": 30,
         "status": "marcada"
     },
-{
+    {
         "id": 9,
         "paciente": "VanguardIA",
         "data_hora_inicio": "2025-11-12T11:00:00",
         "duracao_min": 30,
         "status": "marcada"
     },
-{
+    {
         "id": 10,
         "paciente": "Mateus ",
         "data_hora_inicio": "2025-11-14T11:00:00",
         "duracao_min": 30,
         "status": "cancelada"
     }
+]
