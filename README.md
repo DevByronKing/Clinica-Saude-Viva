@@ -38,22 +38,20 @@ DevOps: GitHub Actions (Pipeline de CI/CD)
 
 
 
-🚀 Começando (Instalação)
-
+## 🚀 Começando (Instalação)
 Siga estes passos para configurar e rodar o projeto localmente.
 
-1. Clone o repositório:
-No Bash
-git clone https://github.com/DevByronKing/Clinica-Saude-Viva.git
-cd Clinica-Saude-Viva
+### 1. Clone o repositório
+```bash
+git clone [https://github.com/DevByronKing/Clinica-Saude-Viva.git](https://github.com/DevByronKing/Clinica-Saude-Viva.git)
+cd Clinica-Saude-Viva ´´´´
 
 2. Crie e ative o Ambiente Virtual:
 
-No Bash
-Crie o venv
+# Crie o venv
 python -m venv .venv
 
-Ative o venv
+# Ative o venv
 Windows
 .\.venv\Scripts\activate
 
@@ -64,25 +62,24 @@ source .venv/bin/activate
 
 Você precisará da sua chave da API da OpenAI.
 
-No Bash
-Copie o arquivo de exemplo
+# Copie o arquivo de exemplo
 cp .env.example .env
+
 Agora, abra o arquivo .env e adicione sua chave:
 
-Snippet de código
 OPENAI_API_KEY=sua-chave-secreta-aqui
 
 4. Instale as Dependências
 
 Instale todas as dependências do requirements.txt e o projeto em modo editável (para que os import funcionem).
 
-No Bash
-Instale as dependências principais (openai, dotenv, etc.)
-
+# 1. Instale as dependências principais da aplicação (OpenAI, etc.)
 pip install -r requirements.txt
 
-Instale o projeto (para que os testes possam encontrar os módulos src)
+# 2. Instale as dependências de desenvolvimento (Pytest, Flake8, Mypy)
+pip install pytest pytest-cov pytest-mock flake8 mypy
 
+# 3. Instale o projeto em modo editável (para os imports funcionarem)
 pip install -e .
 
 
