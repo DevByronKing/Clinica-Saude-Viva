@@ -16,13 +16,12 @@ Attributes:
 
 import os
 import json
-from typing import Optional, Dict, List, Any, cast
+from typing import Optional, Dict, List
 from openai import OpenAI
 from openai.types.chat import (
     ChatCompletionMessageParam,
     ChatCompletionToolParam,
-    ChatCompletionNamedToolChoiceParam,
-    ChatCompletionFunctionToolParam
+    ChatCompletionNamedToolChoiceParam
 )
 from dotenv import load_dotenv
 from datetime import datetime
@@ -128,12 +127,12 @@ def parse_natural_language(text: str) -> Optional[Dict[str, str]]:
 
         if not (message.tool_calls and len(message.tool_calls) > 0):
             return None
-            
+
         # A IA decidiu usar a ferramenta, ótimo!
         tool_call = message.tool_calls[0]
         if tool_call.type != "function":
             return None
-            
+
         function_args = json.loads(tool_call.function.arguments)
 
         # Valida que os campos exigidos existem e não estão vazios
