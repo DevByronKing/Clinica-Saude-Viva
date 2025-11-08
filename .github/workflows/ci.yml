@@ -39,3 +39,5 @@ jobs:
       run: |
         . .venv/bin/activate
         python -m pytest --maxfail=1 -q --disable-warnings --cov=src --cov-report=term-missing
+      env:
+        OPENAI_API_KEY: "DUMMY_KEY_FOR_TESTING"
